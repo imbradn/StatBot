@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const snekfetch = require("snekfetch");
 var moment = require('moment');
 const { hypixeltoken } = require("../../botconfig.json");
-var getLevel = require('../../functions/getLevel.js');
+var getNetworkLevel = require('../../functions/getNetworkLevel.js');
 var getRank = require('../../functions/getRank.js');
 
 module.exports = class MeowCommand extends Command {
@@ -101,7 +101,7 @@ module.exports = class MeowCommand extends Command {
                     var nonString = "Irrelevant";
                 }
 
-                var embed = embed.addField('**Status**', nonString, true).setFooter('This is based fully off of statistics and the status shouldnt be taken seriously.');
+                var embed = embed.addField('**Status**', nonString, true).addField('**NameMC**', `[Click Here](https://namemc.com/profile/${displayname})`, true).setFooter('This is based fully off of statistics and the status shouldnt be taken seriously.');
             message.say(embed);
         }
 

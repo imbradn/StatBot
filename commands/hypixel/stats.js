@@ -3,7 +3,8 @@ const { MessageEmbed } = require('discord.js');
 const snekfetch = require("snekfetch");
 var moment = require('moment');
 const { hypixeltoken } = require("../../botconfig.json");
-var getLevel = require('../../functions/getLevel.js');
+var getNetworkLevel = require('../../functions/getNetworkLevel.js');
+var getBedwarsLevel = require('../../functions/getBedwarsLevel.js');
 var getRank = require('../../functions/getRank.js');
 
 module.exports = class MeowCommand extends Command {
@@ -56,7 +57,7 @@ module.exports = class MeowCommand extends Command {
 
             // Checks rank and adds it to the title of the embed
             if(plusplusrank === "SUPERSTAR"){
-                var statEmbed = statEmbed.setAuthor(`[MVP++] ` + displayname, 'https://visage.surgeplay.com/face/' + userID, 'https://plancke.io/hypixel/player/stats/' + username);
+                var statEmbed = statEmbed.setAuthor(`[MVP++] ` + displayname, 'https://visage.surgeplay.com/face/' + userID, 'https://plancke.io/hypixel/player/stats/' + displayname);
             }else{
                 if(rank === undefined){
                     var statEmbed = statEmbed.setAuthor(displayname, 'https://visage.surgeplay.com/face/' + userID, 'https://plancke.io/hypixel/player/stats/' + username);
@@ -78,19 +79,91 @@ module.exports = class MeowCommand extends Command {
                 var howLongAgo = moment(lastLogin).fromNow();
                 var month = moment(lastLogin).get('month') + 1;
                 let lastLoginString = "\n(" + moment(lastLogin).get('year') + "/" + month + "/" + moment(lastLogin).get('date') + ")";
-                var guildName = hypixelGuildAPI.body.guild.name;
-                var guildMembers = hypixelGuildAPI.body.guild.members.length;
-                var guildTag = hypixelGuildAPI.body.guild.tag;
-                if(guildTag === undefined){var guildTag = ""}else{var guildTag = " [" + hypixelGuildAPI.body.guild.tag + "]";}
+                if(hypixelGuildAPI.body.guild === null){
+                    var guildName = "None"
+                    var guildMembers = "0";
+                    var guildTag = "";
+                }else{
+                    var guildName = hypixelGuildAPI.body.guild.name;
+                    var guildMembers = hypixelGuildAPI.body.guild.members.length;
+                    var guildTag = hypixelGuildAPI.body.guild.tag;
+                    if(guildTag === undefined){var guildTag = ""}else{var guildTag = " [" + hypixelGuildAPI.body.guild.tag + "]";}
+                }
                 var friendCount = hypixelFriendAPI.body.records.length;
 
                 var statEmbed = statEmbed.setImage(skinAPI)
-                .addField('**Level**', getLevel(hypixelAPI.body.player.networkExp), true)
+                .addField('**Level**', getNetworkLevel(hypixelAPI.body.player.networkExp), true)
                 .addField('**Rank**', getRank(rank, plusplusrank), true)
                 .addField('**Karma**', karma, true)
                 .addField('**Last Login**', howLongAgo + lastLoginString, true)
                 .addField('**Guild**', guildName + guildTag + "\n(" + guildMembers + " members)", true)
-                .addField('**Friends**', friendCount, true);
+                .addField('**Friends**', friendCount, true)
+                .setFooter(`made with 💕 by Bradn 🍣`)
+                .setTimestamp();
+            }else if(gamemode === "tntgames" || gamemode === "tnt"){
+                var tntcoins = hypixelAPI.body.player.stats.TNTGames.coins;
+                if(tntcoins === undefined){var tntcoins = 0;}
+                var tntwins = hypixelAPI.body.player.stats.TNTGames.wins;
+                if(tntwins === undefined){var tntwins = 0;}
+                var tnttagwins = hypixelAPI.body.player.stats.TNTGames.wins_tntag;
+                if(tnttagwins === undefined){var tnttagwins = 0;}
+                var tnttagkills = hypixelAPI.body.player.stats.TNTGames.kills_tntag;
+                if(tnttagkills === undefined){var tnttagkills = 0;}
+                var bowspleefwins = hypixelAPI.body.player.stats.TNTGames.wins_bowspleef;
+                if(bowspleefwins === undefined){var bowspleefwins = 0;}
+                var tntrunwins = hypixelAPI.body.player.stats.TNTGames.wins_tntrun;
+                if(tntrunwins === undefined){var tntrunwins = 0;}
+                var tntcurrentwinstreak = hypixelAPI.body.player.stats.TNTGames.winstreak;
+                if(tntcurrentwinstreak === undefined){var tntcurrentwinstreak = 0;}
+
+                var statEmbed = statEmbed
+                .setDescription("TnT Games")
+                .addField(`**Coins**`, `${tntcoins}`, true)
+                .addField(`**Wins**`, `${tntwins}`, true)
+                .addField(`\u200B`, `\u200B`, true)
+                .addField(`**TnT Tag Wins**`, `${tnttagwins}`, true)
+                .addField(`**TnT Tag Kills**`, `${tnttagkills}`, true)
+                .addField(`**Bow Spleef Wins**`, `${bowspleefwins}`, true)
+                .addField(`**TnT Run Wins**`, `${tntrunwins}`, true)
+                .addField(`**Current Win Streak**`, `${tntcurrentwinstreak}`, true)
+                .setThumbnail('https://visage.surgeplay.com/face/64/' + userID);
+            }else if(gamemode === "bedwars" || gamemode === "bw"){
+
+
+                var bwcoins = hypixelAPI.body.player.stats.Bedwars.coins;
+                if(bwcoins === undefined){var bwcoins = 0;}
+                var bwboxes = hypixelAPI.body.player.stats.Bedwars.bedwars_boxes;
+                if(bwboxes === undefined){var bwboxes = 0;}
+                var bwexp = hypixelAPI.body.player.stats.Bedwars.Experience;
+                if(bwexp === undefined){var bwexp = 0;}
+
+                var bwfinalkills = hypixelAPI.body.player.stats.Bedwars.final_kills_bedwars;
+                if(bwfinalkills === undefined){var bwfinalkills = 0;}
+                var bwfinaldeaths = hypixelAPI.body.player.stats.Bedwars.final_deaths_bedwars;
+                if(bwfinaldeaths === undefined){var bwfinaldeaths = 0;}
+                var bwfkdr = bwfinalkills/bwfinaldeaths;
+
+                var bwwins = hypixelAPI.body.player.stats.Bedwars.wins_bedwars;
+                if(bwwins === undefined){var bwwins = 0;}
+                var bwlosses = hypixelAPI.body.player.stats.Bedwars.losses_bedwars;
+                if(bwlosses === undefined){var bwlosses = 0;}
+                var bwwlr = bwwins/bwlosses;
+
+                var statEmbed = statEmbed
+                .setDescription(`Bedwars **-** Overall`)
+                .addField(`**Coins**`, bwcoins, true)
+                .addField(`**Level**`, getBedwarsLevel(bwexp), true)
+                .addField(`**Loot Boxes**`, bwboxes, true)
+                .addField(`**Final Kills**`, bwfinalkills, true)
+                .addField(`**Final Deaths**`, bwfinaldeaths, true)
+                .addField(`**Final KDR**`, bwfkdr.toFixed(2), true)
+                .addField(`**Wins**`, bwwins, true)
+                .addField(`**Losses**`, bwlosses, true)
+                .addField(`**WLR**`, bwwlr.toFixed(2), true);
+
+            }else{
+                var statEmbed = statEmbed.addField(`**ERROR**`, `This gamemode does not exist, if you believe this is a mistake please contact bradn#6668`, false)
+
             }
     
             message.say(statEmbed);

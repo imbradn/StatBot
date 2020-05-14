@@ -1,4 +1,4 @@
-module.exports = function getLevel(exp){
+module.exports = function getNetworkLevel(exp){
     let BASE = 10_000;
     let GROWTH = 2_500;
     let REVERSE_PQ_PREFIX = -(BASE - 0.5 * GROWTH) / GROWTH;
