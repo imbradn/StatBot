@@ -1,0 +1,28 @@
+{
+  "name": "statbot",
+  "version": "1.0.0",
+  "description": "Discord.js bot made to show stats of players.",
+  "main": "bot.js",
+  "scripts": {
+    "test": "sb!help"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradnn/StatBot.git"
+  },
+  "keywords": [
+    "Discord"
+  ],
+  "author": "Bradn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bradnn/StatBot/issues"
+  },
+  "homepage": "https://github.com/bradnn/StatBot#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "discord.js-commando": "github:discordjs/Commando",
+    "moment": "^2.25.3",
+    "snekfetch": "^4.0.4"
+  }
+}

@@ -3,8 +3,8 @@ const { MessageEmbed } = require('discord.js');
 const snekfetch = require("snekfetch");
 var moment = require('moment');
 const { hypixeltoken } = require("../../botconfig.json");
-var getNetworkLevel = require('../../functions/getNetworkLevel.js');
-var getRank = require('../../functions/getRank.js');
+var getNetworkLevel = require('../../functions/stats/network/getNetworkLevel.js');
+var getRank = require('../../functions/stats/network/getRank.js');
 
 module.exports = class MeowCommand extends Command {
 	constructor(client) {
