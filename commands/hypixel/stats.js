@@ -48,27 +48,25 @@ module.exports = class MeowCommand extends Command {
     
             var statEmbed = new MessageEmbed();
 
+
+            // Checks rank and adds it to the title of the embed
             if(plusplusrank === "SUPERSTAR"){
                 var statEmbed = statEmbed.setTitle(`[MVP++] ` + displayname).setURL('https://plancke.io/hypixel/player/stats/' + username);
-
             }else{
                 if(rank === undefined){
                     var statEmbed = statEmbed.setTitle(displayname).setURL('https://plancke.io/hypixel/player/stats/' + username);
                 }else if(rank === "VIP"){
                     var statEmbed = statEmbed.setTitle(`[VIP] ` + displayname).setURL('https://plancke.io/hypixel/player/stats/' + username);
-
                 }else if(rank === "VIP_PLUS"){
                     var statEmbed = statEmbed.setTitle(`[VIP+] ` + displayname).setURL('https://plancke.io/hypixel/player/stats/' + username);
-                    
                 }else if(rank === "MVP"){
                     var statEmbed = statEmbed.setTitle(`[MVP] ` + displayname).setURL('https://plancke.io/hypixel/player/stats/' + username);
-                    
                 }else if(rank === "MVP_PLUS"){
                     var statEmbed = statEmbed.setTitle(`[MVP+] ` + displayname).setURL('https://plancke.io/hypixel/player/stats/' + username);
-                    
                 }
 
             }
+            // Sets users skin as the image of the embed.
             var statEmbed = statEmbed.setImage(skinAPI);
     
             message.say(statEmbed);
